@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BAMAVET - Prontuário Veterinário Digital</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2d5a4a;
+            --primary-light: #4a8c73;
+            --secondary: #d4a574;
+            --accent: #e8927c;
+            --bg: #faf8f5;
+            --card: #ffffff;
+            --text: #2c3e3a;
+            --text-light: #6b7d78;
+            --border: #e2ddd5;
+            --shadow: rgba(45, 90, 74, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+            background-image: 
+                radial-gradient(circle at 20% 50%, rgba(77, 140, 115, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(212, 165, 116, 0.03) 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            padding: 3rem 2.5rem;
+            border-radius: 16px 16px 0 0;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px var(--shadow);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .header h1 {
+            font-family: 'DM Serif Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header .subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-wrapper {
+            background: var(--card);
+            padding: 0;
+            border-radius: 0 0 16px 16px;
+            box-shadow: 0 8px 30px var(--shadow);
+        }
+
+        .section {
+            padding: 2.5rem;
+            border-bottom: 2px solid var(--border);
+            animation: slideIn 0.5s ease-out backwards;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+        .section:nth-child(6) { animation-delay: 0.6s; }
+        .section:nth-child(7) { animation-delay: 0.7s; }
+        .section:nth-child(8) { animation-delay: 0.8s; }
+
+        .section-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-icon {
+            font-size: 1.8rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+            font-size: 0.95rem;
+        }
+
+        input, select, textarea {
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(74, 140, 115, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+            line-height: 1.6;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            padding: 2.5rem;
+            background: linear-gradient(to bottom, transparent, rgba(45, 90, 74, 0.03));
+        }
+
+        button {
+            flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Work Sans', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(45, 90, 74, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(45, 90, 74, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--card);
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg);
+            border-color: var(--text-light);
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: 150px 1fr;
+            gap: 1rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .info-value {
+            color: var(--text);
+        }
+
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 1.25rem 1.75rem;
+            border-radius: 8px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            display: none;
+            animation: slideInRight 0.4s ease-out;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .toast.show {
+            display: block;
+        }
+
+        .toast.error {
+            background: linear-gradient(135deg, #c54f4f 0%, #d97373 100%);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+
+            .header {
+                padding: 2rem 1.5rem;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .toast {
+                right: 1rem;
+                left: 1rem;
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🐾 BAMAVET</h1>
+            <p class="subtitle">Prontuário Veterinário - Registro completo do atendimento clínico</p>
+        </div>
+
+        <form id="prontuarioForm" class="form-wrapper">
+
+
+            <!-- Informações da Clínica -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🏥</span>
+                    Informações da Clínica
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="clinicaNome">Nome da Clínica/Hospital *</label>
+                        <input type="text" id="clinicaNome" value="BAMAVET" readonly style="background: #f5f5f5; cursor: not-allowed;">
+                    </div>
+                    <div class="form-group">
+                        <label for="prontuarioNum">Número do Prontuário *</label>
+                        <input type="text" id="prontuarioNum" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dataHora">Data e Hora *</label>
+                        <input type="datetime-local" id="dataHora" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dados do Tutor -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🧑‍⚕️</span>
+                    Dados do Tutor
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="tutorNome">Nome Completo *</label>
+                        <input type="text" id="tutorNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorCpf">CPF</label>
+                        <input type="text" id="tutorCpf" placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="tutorEndereco">Endereço</label>
+                        <input type="text" id="tutorEndereco">
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorTelefone">Telefone *</label>
+                        <input type="tel" id="tutorTelefone" required placeholder="(00) 00000-0000">
+                    </div>
+                    <div class="form-group">
+                        <label for="tutorEmail">E-mail</label>
+                        <input type="email" id="tutorEmail">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dados do Paciente -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🐶</span>
+                    Dados do Paciente
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="pacienteNome">Nome do Animal *</label>
+                        <input type="text" id="pacienteNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteEspecie">Espécie *</label>
+                        <select id="pacienteEspecie" required>
+                            <option value="">Selecione...</option>
+                            <option value="Canina">Canina</option>
+                            <option value="Felina">Felina</option>
+                            <option value="Ave">Ave</option>
+                            <option value="Réptil">Réptil</option>
+                            <option value="Roedor">Roedor</option>
+                            <option value="Outra">Outra</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteRaca">Raça</label>
+                        <input type="text" id="pacienteRaca" placeholder="Ex: SRD, Pastor Alemão">
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteSexo">Sexo *</label>
+                        <select id="pacienteSexo" required>
+                            <option value="">Selecione...</option>
+                            <option value="Macho">Macho</option>
+                            <option value="Fêmea">Fêmea</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteIdade">Idade *</label>
+                        <input type="text" id="pacienteIdade" required placeholder="Ex: 3 anos, 6 meses">
+                    </div>
+                    <div class="form-group">
+                        <label for="pacientePeso">Peso (kg) *</label>
+                        <input type="number" id="pacientePeso" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="pacienteMicrochip">Microchip</label>
+                        <input type="text" id="pacienteMicrochip">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Histórico Clínico -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">📌</span>
+                    Histórico Clínico
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="vacinacao">Status de Vacinação</label>
+                        <input type="text" id="vacinacao" placeholder="Ex: Em dia, atrasada">
+                    </div>
+                    <div class="form-group">
+                        <label for="vermifugacao">Última Vermifugação</label>
+                        <input type="text" id="vermifugacao" placeholder="Ex: há 3 meses">
+                    </div>
+                    <div class="form-group">
+                        <label for="alimentacao">Alimentação</label>
+                        <input type="text" id="alimentacao" placeholder="Ex: Ração seca premium">
+                    </div>
+                    <div class="form-group">
+                        <label for="ambiente">Ambiente</label>
+                        <input type="text" id="ambiente" placeholder="Ex: Domiciliar, quintal">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="historicoGeral">Observações Gerais do Histórico</label>
+                        <textarea id="historicoGeral" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Queixa Principal -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🩺</span>
+                    Queixa Principal
+                </h2>
+                <div class="form-group full-width">
+                    <label for="queixaPrincipal">Motivo da Consulta *</label>
+                    <textarea id="queixaPrincipal" required rows="4" 
+                              placeholder="Descreva os sintomas, comportamento e tempo de evolução..."></textarea>
+                </div>
+            </div>
+
+            <!-- Exame Físico -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🔍</span>
+                    Exame Físico
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="temperatura">Temperatura (°C)</label>
+                        <input type="number" id="temperatura" step="0.1" placeholder="Ex: 38.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="fc">FC - Frequência Cardíaca (bpm)</label>
+                        <input type="number" id="fc" placeholder="Ex: 120">
+                    </div>
+                    <div class="form-group">
+                        <label for="fr">FR - Frequência Respiratória (irpm)</label>
+                        <input type="number" id="fr" placeholder="Ex: 30">
+                    </div>
+                    <div class="form-group">
+                        <label for="mucosas">Mucosas</label>
+                        <input type="text" id="mucosas" placeholder="Ex: Róseas, pálidas">
+                    </div>
+                    <div class="form-group">
+                        <label for="tpc">TPC - Tempo de Perfusão Capilar</label>
+                        <input type="text" id="tpc" placeholder="Ex: 2 segundos">
+                    </div>
+                    <div class="form-group">
+                        <label for="hidratacao">Hidratação</label>
+                        <input type="text" id="hidratacao" placeholder="Ex: Normal, desidratado">
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="exameFisicoObs">Observações do Exame Físico</label>
+                        <textarea id="exameFisicoObs" rows="4" 
+                                  placeholder="Outros achados relevantes no exame físico..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exames Complementares -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🧪</span>
+                    Exames Complementares
+                </h2>
+                <div class="form-group full-width">
+                    <label for="examesSolicitados">Exames Solicitados</label>
+                    <textarea id="examesSolicitados" rows="4" 
+                              placeholder="Liste os exames solicitados (hemograma, bioquímica, imagem, etc.)"></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="resultadosExames">Resultados de Exames</label>
+                    <textarea id="resultadosExames" rows="4" 
+                              placeholder="Resultados disponíveis..."></textarea>
+                </div>
+            </div>
+
+            <!-- Diagnóstico e Tratamento -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">🧠</span>
+                    Diagnóstico e Tratamento
+                </h2>
+                <div class="form-group full-width">
+                    <label for="diagnostico">Diagnóstico *</label>
+                    <textarea id="diagnostico" required rows="3" 
+                              placeholder="Diagnóstico definitivo ou suspeita clínica..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="tratamento">Tratamento Instituído *</label>
+                    <textarea id="tratamento" required rows="5" 
+                              placeholder="Medicações prescritas, dosagens, frequência, via de administração..."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="procedimentos">Procedimentos Realizados</label>
+                    <textarea id="procedimentos" rows="3" 
+                              placeholder="Cirurgias, curativos, aplicações..."></textarea>
+                </div>
+            </div>
+
+            <!-- Evolução e Observações -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">📝</span>
+                    Evolução e Observações
+                </h2>
+                <div class="form-group full-width">
+                    <label for="evolucao">Evolução do Quadro</label>
+                    <textarea id="evolucao" rows="4" 
+                              placeholder="Resposta ao tratamento, observações da internação, etc."></textarea>
+                </div>
+                <div class="form-group full-width">
+                    <label for="orientacoes">Orientações ao Tutor</label>
+                    <textarea id="orientacoes" rows="4" 
+                              placeholder="Cuidados em casa, retorno, sinais de alerta..."></textarea>
+                </div>
+            </div>
+
+            <!-- Dados do Médico Veterinário -->
+            <div class="section">
+                <h2 class="section-title">
+                    <span class="section-icon">👩‍⚕️</span>
+                    Médico Veterinário Responsável
+                </h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="veterinarioNome">Nome Completo *</label>
+                        <input type="text" id="veterinarioNome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="veterinarioCrmv">CRMV *</label>
+                        <input type="text" id="veterinarioCrmv" required placeholder="Ex: 12345">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botões de Ação -->
+            <div class="button-group">
+                <button type="button" class="btn-secondary" onclick="limparFormulario()">
+                    Limpar Formulário
+                </button>
+                <button type="submit" class="btn-primary">
+                    Finalizar e Enviar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toast de Notificação -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // Definir data e hora atual ao carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            const now = new Date();
+            const dateTimeLocal = now.toISOString().slice(0, 16);
+            document.getElementById('dataHora').value = dateTimeLocal;
+
+            // Verificar se há dados na URL para edição
+            const urlParams = new URLSearchParams(window.location.search);
+            const dadosEditacao = urlParams.get('d') || urlParams.get('dados');
+            
+            if (dadosEditacao) {
+                try {
+                    const dadosJSON = decodeURIComponent(escape(atob(dadosEditacao)));
+                    const dados = JSON.parse(dadosJSON);
+                    carregarDadosNoFormulario(dados);
+                    showToast('📝 Prontuário carregado para edição!');
+                    console.log('Dados carregados com sucesso');
+                } catch (error) {
+                    console.error('Erro ao carregar dados:', error);
+                    showToast('⚠️ Erro ao carregar dados para edição', true);
+                }
+            }
+        });
+
+        // Função para carregar dados no formulário
+        function carregarDadosNoFormulario(dados) {
+            try {
+                if (dados.prontuarioNum) document.getElementById('prontuarioNum').value = dados.prontuarioNum;
+                if (dados.dataHora) document.getElementById('dataHora').value = dados.dataHora;
+                if (dados.tutorNome) document.getElementById('tutorNome').value = dados.tutorNome;
+                if (dados.tutorCpf) document.getElementById('tutorCpf').value = dados.tutorCpf;
+                if (dados.tutorEndereco) document.getElementById('tutorEndereco').value = dados.tutorEndereco;
+                if (dados.tutorTelefone) document.getElementById('tutorTelefone').value = dados.tutorTelefone;
+                if (dados.tutorEmail) document.getElementById('tutorEmail').value = dados.tutorEmail;
+                if (dados.pacienteNome) document.getElementById('pacienteNome').value = dados.pacienteNome;
+                if (dados.pacienteEspecie) document.getElementById('pacienteEspecie').value = dados.pacienteEspecie;
+                if (dados.pacienteRaca) document.getElementById('pacienteRaca').value = dados.pacienteRaca;
+                if (dados.pacienteSexo) document.getElementById('pacienteSexo').value = dados.pacienteSexo;
+                if (dados.pacienteIdade) document.getElementById('pacienteIdade').value = dados.pacienteIdade;
+                if (dados.pacientePeso) document.getElementById('pacientePeso').value = dados.pacientePeso;
+                if (dados.pacienteMicrochip) document.getElementById('pacienteMicrochip').value = dados.pacienteMicrochip;
+                if (dados.vacinacao) document.getElementById('vacinacao').value = dados.vacinacao;
+                if (dados.vermifugacao) document.getElementById('vermifugacao').value = dados.vermifugacao;
+                if (dados.alimentacao) document.getElementById('alimentacao').value = dados.alimentacao;
+                if (dados.ambiente) document.getElementById('ambiente').value = dados.ambiente;
+                if (dados.historicoGeral) document.getElementById('historicoGeral').value = dados.historicoGeral;
+                if (dados.queixaPrincipal) document.getElementById('queixaPrincipal').value = dados.queixaPrincipal;
+                if (dados.temperatura) document.getElementById('temperatura').value = dados.temperatura;
+                if (dados.fc) document.getElementById('fc').value = dados.fc;
+                if (dados.fr) document.getElementById('fr').value = dados.fr;
+                if (dados.mucosas) document.getElementById('mucosas').value = dados.mucosas;
+                if (dados.tpc) document.getElementById('tpc').value = dados.tpc;
+                if (dados.hidratacao) document.getElementById('hidratacao').value = dados.hidratacao;
+                if (dados.exameFisicoObs) document.getElementById('exameFisicoObs').value = dados.exameFisicoObs;
+                if (dados.examesSolicitados) document.getElementById('examesSolicitados').value = dados.examesSolicitados;
+                if (dados.resultadosExames) document.getElementById('resultadosExames').value = dados.resultadosExames;
+                if (dados.diagnostico) document.getElementById('diagnostico').value = dados.diagnostico;
+                if (dados.tratamento) document.getElementById('tratamento').value = dados.tratamento;
+                if (dados.procedimentos) document.getElementById('procedimentos').value = dados.procedimentos;
+                if (dados.evolucao) document.getElementById('evolucao').value = dados.evolucao;
+                if (dados.orientacoes) document.getElementById('orientacoes').value = dados.orientacoes;
+                if (dados.veterinarioNome) document.getElementById('veterinarioNome').value = dados.veterinarioNome;
+                if (dados.veterinarioCrmv) document.getElementById('veterinarioCrmv').value = dados.veterinarioCrmv;
+            } catch (error) {
+                console.error('Erro ao carregar campo:', error);
+            }
+        }
+
+        // Função para mostrar toast
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast show' + (isError ? ' error' : '');
+            
+            setTimeout(() => {
+                toast.className = 'toast';
+            }, 4000);
+        }
+
+        // Função para limpar formulário
+        function limparFormulario() {
+            if (confirm('Tem certeza que deseja limpar todos os campos?')) {
+                document.getElementById('prontuarioForm').reset();
+                const now = new Date();
+                const dateTimeLocal = now.toISOString().slice(0, 16);
+                document.getElementById('dataHora').value = dateTimeLocal;
+                showToast('Formulário limpo com sucesso!');
+            }
+        }
+
+        // Função para formatar data
+        function formatarData(dateTimeString) {
+            const date = new Date(dateTimeString);
+            return date.toLocaleString('pt-BR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // Função para gerar documento Word (HTML que abre no Word)
+        function gerarWordHTML(dados) {
+            const html = `
+<!DOCTYPE html>
+<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+<head>
+    <meta charset='utf-8'>
+    <title>Prontuário Veterinário</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <w:WordDocument>
+            <w:View>Print</w:View>
+            <w:Zoom>100</w:Zoom>
+        </w:WordDocument>
+    </xml>
+    <![endif]-->
+    <style>
+        body { font-family: Calibri, Arial, sans-serif; font-size: 11pt; line-height: 1.5; }
+        h1 { color: #2d5a4a; font-size: 24pt; text-align: center; margin-bottom: 10pt; }
+        h2 { color: #2d5a4a; font-size: 14pt; margin-top: 15pt; margin-bottom: 8pt; border-bottom: 2px solid #2d5a4a; padding-bottom: 3pt; }
+        p { margin: 5pt 0; }
+        .label { font-weight: bold; }
+        .header { text-align: center; margin-bottom: 20pt; }
+        .subtitle { text-align: center; color: #666; margin-bottom: 20pt; }
+        .footer { margin-top: 30pt; border-top: 1px solid #ccc; padding-top: 10pt; }
+        .signature { margin-top: 40pt; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>BAMAVET</h1>
+        <p class="subtitle">Prontuário Veterinário</p>
+    </div>
+
+    <h2>INFORMAÇÕES DA CLÍNICA</h2>
+    <p><span class="label">Clínica:</span> ${dados.clinicaNome}</p>
+    <p><span class="label">Prontuário Nº:</span> ${dados.prontuarioNum}</p>
+    <p><span class="label">Data e Hora:</span> ${formatarData(dados.dataHora)}</p>
+
+    <h2>DADOS DO TUTOR</h2>
+    <p><span class="label">Nome:</span> ${dados.tutorNome}</p>
+    ${dados.tutorCpf ? `<p><span class="label">CPF:</span> ${dados.tutorCpf}</p>` : ''}
+    ${dados.tutorEndereco ? `<p><span class="label">Endereço:</span> ${dados.tutorEndereco}</p>` : ''}
+    <p><span class="label">Telefone:</span> ${dados.tutorTelefone}</p>
+    ${dados.tutorEmail ? `<p><span class="label">E-mail:</span> ${dados.tutorEmail}</p>` : ''}
+
+    <h2>DADOS DO PACIENTE</h2>
+    <p><span class="label">Nome:</span> ${dados.pacienteNome}</p>
+    <p><span class="label">Espécie:</span> ${dados.pacienteEspecie}</p>
+    <p><span class="label">Raça:</span> ${dados.pacienteRaca || 'Não informada'}</p>
+    <p><span class="label">Sexo:</span> ${dados.pacienteSexo}</p>
+    <p><span class="label">Idade:</span> ${dados.pacienteIdade}</p>
+    <p><span class="label">Peso:</span> ${dados.pacientePeso} kg</p>
+    ${dados.pacienteMicrochip ? `<p><span class="label">Microchip:</span> ${dados.pacienteMicrochip}</p>` : ''}
+
+    ${(dados.vacinacao || dados.vermifugacao || dados.alimentacao || dados.ambiente || dados.historicoGeral) ? `
+    <h2>HISTÓRICO CLÍNICO</h2>
+    ${dados.vacinacao ? `<p><span class="label">Vacinação:</span> ${dados.vacinacao}</p>` : ''}
+    ${dados.vermifugacao ? `<p><span class="label">Vermifugação:</span> ${dados.vermifugacao}</p>` : ''}
+    ${dados.alimentacao ? `<p><span class="label">Alimentação:</span> ${dados.alimentacao}</p>` : ''}
+    ${dados.ambiente ? `<p><span class="label">Ambiente:</span> ${dados.ambiente}</p>` : ''}
+    ${dados.historicoGeral ? `<p><span class="label">Observações:</span> ${dados.historicoGeral}</p>` : ''}
+    ` : ''}
+
+    <h2>QUEIXA PRINCIPAL</h2>
+    <p>${dados.queixaPrincipal}</p>
+
+    <h2>EXAME FÍSICO</h2>
+    ${dados.temperatura ? `<p><span class="label">Temperatura:</span> ${dados.temperatura}°C</p>` : ''}
+    ${dados.fc ? `<p><span class="label">FC (Frequência Cardíaca):</span> ${dados.fc} bpm</p>` : ''}
+    ${dados.fr ? `<p><span class="label">FR (Frequência Respiratória):</span> ${dados.fr} irpm</p>` : ''}
+    ${dados.mucosas ? `<p><span class="label">Mucosas:</span> ${dados.mucosas}</p>` : ''}
+    ${dados.tpc ? `<p><span class="label">TPC (Tempo de Perfusão Capilar):</span> ${dados.tpc}</p>` : ''}
+    ${dados.hidratacao ? `<p><span class="label">Hidratação:</span> ${dados.hidratacao}</p>` : ''}
+    ${dados.exameFisicoObs ? `<p><span class="label">Observações:</span> ${dados.exameFisicoObs}</p>` : ''}
+
+    ${(dados.examesSolicitados || dados.resultadosExames) ? `
+    <h2>EXAMES COMPLEMENTARES</h2>
+    ${dados.examesSolicitados ? `<p><span class="label">Exames Solicitados:</span><br>${dados.examesSolicitados.replace(/\n/g, '<br>')}</p>` : ''}
+    ${dados.resultadosExames ? `<p><span class="label">Resultados:</span><br>${dados.resultadosExames.replace(/\n/g, '<br>')}</p>` : ''}
+    ` : ''}
+
+    <h2>DIAGNÓSTICO</h2>
+    <p>${dados.diagnostico}</p>
+
+    <h2>TRATAMENTO INSTITUÍDO</h2>
+    <p>${dados.tratamento.replace(/\n/g, '<br>')}</p>
+    ${dados.procedimentos ? `<p><span class="label">Procedimentos Realizados:</span><br>${dados.procedimentos.replace(/\n/g, '<br>')}</p>` : ''}
+
+    ${dados.evolucao ? `
+    <h2>EVOLUÇÃO DO QUADRO</h2>
+    <p>${dados.evolucao.replace(/\n/g, '<br>')}</p>
+    ` : ''}
+
+    ${dados.orientacoes ? `
+    <h2>ORIENTAÇÕES AO TUTOR</h2>
+    <p>${dados.orientacoes.replace(/\n/g, '<br>')}</p>
+    ` : ''}
+
+    <div class="footer">
+        <p><span class="label">Médico Veterinário:</span> ${dados.veterinarioNome}</p>
+        <p><span class="label">CRMV:</span> ${dados.veterinarioCrmv}</p>
+        <div class="signature">
+            <p>_______________________________________</p>
+            <p>Assinatura</p>
+        </div>
+    </div>
+</body>
+</html>`;
+            return html;
+        }
+
+
+        // Função para criar embed do Discord
+        function criarEmbedDiscord(dados) {
+            return {
+                content: '🏥 **Novo Prontuário Veterinário Registrado**',
+                embeds: [{
+                    title: '📋 Prontuário Veterinário - BAMAVET',
+                    color: 3050314,
+                    fields: [
+                        {
+                            name: '📋 Prontuário',
+                            value: dados.prontuarioNum,
+                            inline: true
+                        },
+                        {
+                            name: '📅 Data',
+                            value: formatarData(dados.dataHora),
+                            inline: true
+                        },
+                        {
+                            name: '\u200b',
+                            value: '\u200b',
+                            inline: true
+                        },
+                        {
+                            name: '🧑‍⚕️ Tutor',
+                            value: `${dados.tutorNome}\n📞 ${dados.tutorTelefone}`,
+                            inline: true
+                        },
+                        {
+                            name: '🐾 Paciente',
+                            value: `${dados.pacienteNome}\n${dados.pacienteEspecie} | ${dados.pacienteSexo}\n${dados.pacienteIdade} | ${dados.pacientePeso}kg`,
+                            inline: true
+                        },
+                        {
+                            name: '\u200b',
+                            value: '\u200b',
+                            inline: true
+                        },
+                        {
+                            name: '🩺 Queixa',
+                            value: dados.queixaPrincipal.length > 500 ? dados.queixaPrincipal.substring(0, 497) + '...' : dados.queixaPrincipal,
+                            inline: false
+                        },
+                        {
+                            name: '🧠 Diagnóstico',
+                            value: dados.diagnostico.length > 500 ? dados.diagnostico.substring(0, 497) + '...' : dados.diagnostico,
+                            inline: false
+                        },
+                        {
+                            name: '💊 Tratamento',
+                            value: dados.tratamento.length > 500 ? dados.tratamento.substring(0, 497) + '...' : dados.tratamento,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: `Dr(a). ${dados.veterinarioNome} | CRMV: ${dados.veterinarioCrmv}`
+                    },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+        }
+
+        // Submit do formulário
+        document.getElementById('prontuarioForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            // Webhook fixo e privado
+            const webhookUrl = 'https://ptb.discord.com/api/webhooks/1458492625970532392/6NxWQsqHCYfa-WtepIgv-ktcpcOE01dM-IHaP5_VsWF0ZznfW790dFFfNPtSSXnoxyIR';
+
+            // Coletar dados do formulário
+            const dados = {
+                clinicaNome: document.getElementById('clinicaNome').value,
+                prontuarioNum: document.getElementById('prontuarioNum').value,
+                dataHora: document.getElementById('dataHora').value,
+                tutorNome: document.getElementById('tutorNome').value,
+                tutorCpf: document.getElementById('tutorCpf').value,
+                tutorEndereco: document.getElementById('tutorEndereco').value,
+                tutorTelefone: document.getElementById('tutorTelefone').value,
+                tutorEmail: document.getElementById('tutorEmail').value,
+                pacienteNome: document.getElementById('pacienteNome').value,
+                pacienteEspecie: document.getElementById('pacienteEspecie').value,
+                pacienteRaca: document.getElementById('pacienteRaca').value,
+                pacienteSexo: document.getElementById('pacienteSexo').value,
+                pacienteIdade: document.getElementById('pacienteIdade').value,
+                pacientePeso: document.getElementById('pacientePeso').value,
+                pacienteMicrochip: document.getElementById('pacienteMicrochip').value,
+                vacinacao: document.getElementById('vacinacao').value,
+                vermifugacao: document.getElementById('vermifugacao').value,
+                alimentacao: document.getElementById('alimentacao').value,
+                ambiente: document.getElementById('ambiente').value,
+                historicoGeral: document.getElementById('historicoGeral').value,
+                queixaPrincipal: document.getElementById('queixaPrincipal').value,
+                temperatura: document.getElementById('temperatura').value,
+                fc: document.getElementById('fc').value,
+                fr: document.getElementById('fr').value,
+                mucosas: document.getElementById('mucosas').value,
+                tpc: document.getElementById('tpc').value,
+                hidratacao: document.getElementById('hidratacao').value,
+                exameFisicoObs: document.getElementById('exameFisicoObs').value,
+                examesSolicitados: document.getElementById('examesSolicitados').value,
+                resultadosExames: document.getElementById('resultadosExames').value,
+                diagnostico: document.getElementById('diagnostico').value,
+                tratamento: document.getElementById('tratamento').value,
+                procedimentos: document.getElementById('procedimentos').value,
+                evolucao: document.getElementById('evolucao').value,
+                orientacoes: document.getElementById('orientacoes').value,
+                veterinarioNome: document.getElementById('veterinarioNome').value,
+                veterinarioCrmv: document.getElementById('veterinarioCrmv').value
+            };
+
+            try {
+                showToast('⏳ Gerando documento e enviando...');
+                console.log('Iniciando geração do documento...');
+
+                // Gerar HTML do Word
+                console.log('Gerando documento Word HTML...');
+                const wordHTML = gerarWordHTML(dados);
+                
+                // Converter para Blob
+                const wordBlob = new Blob([wordHTML], { type: 'application/msword' });
+                console.log('Blob criado, tamanho:', wordBlob.size);
+                
+                const wordFileName = `Prontuario_${dados.pacienteNome.replace(/\s+/g, '_')}_${dados.prontuarioNum}.doc`;
+                console.log('Nome do arquivo:', wordFileName);
+
+                // Criar embed do Discord
+                console.log('Criando embed...');
+                
+                // Criar link de edição com TODOS os dados
+                const dadosParaEditar = {
+                    clinicaNome: dados.clinicaNome,
+                    prontuarioNum: dados.prontuarioNum,
+                    dataHora: dados.dataHora,
+                    tutorNome: dados.tutorNome,
+                    tutorCpf: dados.tutorCpf,
+                    tutorEndereco: dados.tutorEndereco,
+                    tutorTelefone: dados.tutorTelefone,
+                    tutorEmail: dados.tutorEmail,
+                    pacienteNome: dados.pacienteNome,
+                    pacienteEspecie: dados.pacienteEspecie,
+                    pacienteRaca: dados.pacienteRaca,
+                    pacienteSexo: dados.pacienteSexo,
+                    pacienteIdade: dados.pacienteIdade,
+                    pacientePeso: dados.pacientePeso,
+                    pacienteMicrochip: dados.pacienteMicrochip,
+                    vacinacao: dados.vacinacao,
+                    vermifugacao: dados.vermifugacao,
+                    alimentacao: dados.alimentacao,
+                    ambiente: dados.ambiente,
+                    historicoGeral: dados.historicoGeral,
+                    queixaPrincipal: dados.queixaPrincipal,
+                    temperatura: dados.temperatura,
+                    fc: dados.fc,
+                    fr: dados.fr,
+                    mucosas: dados.mucosas,
+                    tpc: dados.tpc,
+                    hidratacao: dados.hidratacao,
+                    exameFisicoObs: dados.exameFisicoObs,
+                    examesSolicitados: dados.examesSolicitados,
+                    resultadosExames: dados.resultadosExames,
+                    diagnostico: dados.diagnostico,
+                    tratamento: dados.tratamento,
+                    procedimentos: dados.procedimentos,
+                    evolucao: dados.evolucao,
+                    orientacoes: dados.orientacoes,
+                    veterinarioNome: dados.veterinarioNome,
+                    veterinarioCrmv: dados.veterinarioCrmv
+                };
+                
+                try {
+                    const dadosJSON = JSON.stringify(dadosParaEditar);
+                    const dadosEncoded = btoa(unescape(encodeURIComponent(dadosJSON)));
+                    const baseUrl = window.location.origin + window.location.pathname;
+                    const editUrl = `${baseUrl}?d=${dadosEncoded}`;
+                    
+                    console.log('Tamanho da URL:', editUrl.length, 'caracteres');
+                    
+                    const embedPayload = {
+                        content: '🏥 **Novo Prontuário Veterinário Registrado**\n📝 **Link de edição enviado separadamente abaixo**',
+                        embeds: [{
+                            title: '📋 Prontuário Veterinário',
+                            color: 3050314,
+                            fields: [
+                                {
+                                    name: '🏥 Clínica',
+                                    value: dados.clinicaNome,
+                                    inline: true
+                                },
+                                {
+                                    name: '📋 Prontuário',
+                                    value: dados.prontuarioNum,
+                                    inline: true
+                                },
+                                {
+                                    name: '📅 Data e Hora',
+                                    value: formatarData(dados.dataHora),
+                                    inline: true
+                                },
+                                {
+                                    name: '🧑 Tutor',
+                                    value: `**Nome:** ${dados.tutorNome}\n**Telefone:** ${dados.tutorTelefone}${dados.tutorCpf ? `\n**CPF:** ${dados.tutorCpf}` : ''}${dados.tutorEndereco ? `\n**Endereço:** ${dados.tutorEndereco}` : ''}`,
+                                    inline: false
+                                },
+                                {
+                                    name: '🐾 Paciente',
+                                    value: `**Nome:** ${dados.pacienteNome}\n**Espécie:** ${dados.pacienteEspecie}\n**Raça:** ${dados.pacienteRaca || 'Não informada'}\n**Sexo:** ${dados.pacienteSexo}\n**Idade:** ${dados.pacienteIdade}\n**Peso:** ${dados.pacientePeso} kg`,
+                                    inline: false
+                                },
+                                {
+                                    name: '🩺 Queixa Principal',
+                                    value: dados.queixaPrincipal.length > 1000 ? dados.queixaPrincipal.substring(0, 997) + '...' : dados.queixaPrincipal,
+                                    inline: false
+                                },
+                                {
+                                    name: '🔬 Exame Físico',
+                                    value: `${dados.temperatura ? `**Temperatura:** ${dados.temperatura}°C\n` : ''}${dados.fc ? `**FC:** ${dados.fc} bpm\n` : ''}${dados.fr ? `**FR:** ${dados.fr} irpm\n` : ''}${dados.mucosas ? `**Mucosas:** ${dados.mucosas}\n` : ''}${dados.tpc ? `**TPC:** ${dados.tpc}\n` : ''}${dados.hidratacao ? `**Hidratação:** ${dados.hidratacao}\n` : ''}${dados.exameFisicoObs ? `**Obs:** ${dados.exameFisicoObs}` : ''}`.trim() || 'Não informado',
+                                    inline: false
+                                },
+                                {
+                                    name: '🧠 Diagnóstico',
+                                    value: dados.diagnostico.length > 1000 ? dados.diagnostico.substring(0, 997) + '...' : dados.diagnostico,
+                                    inline: false
+                                },
+                                {
+                                    name: '💊 Tratamento',
+                                    value: dados.tratamento.length > 1000 ? dados.tratamento.substring(0, 997) + '...' : dados.tratamento,
+                                    inline: false
+                                }
+                            ],
+                            footer: {
+                                text: `Veterinário: ${dados.veterinarioNome} - CRMV: ${dados.veterinarioCrmv} • Hoje às ${new Date().toLocaleTimeString('pt-BR', {hour: '2-digit', minute: '2-digit'})}`
+                            },
+                            timestamp: new Date().toISOString()
+                        }]
+                    };
+
+                    // Preparar FormData
+                    console.log('Preparando FormData...');
+                    const formData = new FormData();
+                    formData.append('payload_json', JSON.stringify(embedPayload));
+                    formData.append('file', wordBlob, wordFileName);
+
+                    // Enviar para Discord
+                    console.log('Enviando para Discord...');
+                    const response = await fetch(webhookUrl, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    console.log('Response status:', response.status);
+                    console.log('Response ok:', response.ok);
+
+                    if (response.ok) {
+                        // Enviar link de edição em mensagem separada
+                        await fetch(webhookUrl, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                content: `🔗 **Link para editar o prontuário ${dados.prontuarioNum}:**\n${editUrl}`
+                            })
+                        });
+
+                        showToast('✅ Prontuário enviado com sucesso!');
+                        console.log('Prontuário enviado com sucesso!');
+                        
+                        // Confirmar se deseja limpar o formulário
+                        setTimeout(() => {
+                            if (confirm('Prontuário enviado! Deseja limpar o formulário para um novo atendimento?')) {
+                                document.getElementById('prontuarioForm').reset();
+                                const now = new Date();
+                                const dateTimeLocal = now.toISOString().slice(0, 16);
+                                document.getElementById('dataHora').value = dateTimeLocal;
+                                document.getElementById('clinicaNome').value = 'BAMAVET';
+                            }
+                        }, 1500);
+                    } else {
+                        const errorText = await response.text();
+                        console.error('Erro do servidor:', errorText);
+                        console.error('Status:', response.status);
+                        throw new Error(`Erro ao enviar: ${response.status}`);
+                    }
+                } catch (error) {
+                    showToast('❌ Erro ao enviar prontuário. Tente novamente.', true);
+                    console.error('Erro detalhado:', error);
+                    console.error('Stack:', error.stack);
+                }
+            } catch (error) {
+                showToast('❌ Erro ao enviar prontuário. Tente novamente.', true);
+                console.error('Erro detalhado:', error);
+                console.error('Stack:', error.stack);
+            }
+        });
+
+        // Máscara para CPF
+        document.getElementById('tutorCpf').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d)/, '$1.$2');
+                value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+
+        // Máscara para Telefone
+        document.getElementById('tutorTelefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length <= 11) {
+                value = value.replace(/^(\d{2})(\d)/g, '($1) $2');
+                value = value.replace(/(\d)(\d{4})$/, '$1-$2');
+                e.target.value = value;
+            }
+        });
+    </script>
+</body>
+</html>
