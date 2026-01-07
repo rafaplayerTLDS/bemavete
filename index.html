@@ -685,6 +685,15 @@
                     carregarDadosNoFormulario(dados);
                     showToast('📝 Prontuário carregado para edição!');
                     console.log('Dados carregados com sucesso');
+                    
+                    // Adicionar indicador visual de modo de edição
+                    const header = document.querySelector('.header');
+                    const editBadge = document.createElement('div');
+                    editBadge.style.cssText = 'position: absolute; top: 10px; right: 10px; background: #FFA500; color: white; padding: 8px 16px; border-radius: 20px; font-weight: bold; font-size: 0.9rem; box-shadow: 0 2px 8px rgba(0,0,0,0.3); z-index: 10;';
+                    editBadge.innerHTML = '✏️ MODO EDIÇÃO';
+                    header.style.position = 'relative';
+                    header.appendChild(editBadge);
+                    
                 } catch (error) {
                     console.error('Erro ao carregar dados:', error);
                     showToast('⚠️ Erro ao carregar dados para edição', true);
@@ -951,6 +960,18 @@
 
             // Webhook fixo e privado
             const webhookUrl = 'https://ptb.discord.com/api/webhooks/1458492625970532392/6NxWQsqHCYfa-WtepIgv-ktcpcOE01dM-IHaP5_VsWF0ZznfW790dFFfNPtSSXnoxyIR';
+            
+            // Webhook para prontuários EDITADOS (configure aqui)
+            const webhookUrlEditado = 'https://ptb.discord.com/api/webhooks/1458534483048271894/WPsgou-y5XjOEe0OPXnYhMuOFlVcUxWpa5WzSZvxi_BRqifTSDGqqLsjZZqgmIiZMJ9Z';
+            
+            // Verificar se é uma edição (tem parâmetro 'd' ou 'dados' na URL)
+            const urlParams = new URLSearchParams(window.location.search);
+            const isEdicao = urlParams.has('d') || urlParams.has('dados');
+            
+            // Escolher o webhook correto
+            const webhookFinal = isEdicao && webhookUrlEditado !== 'https://ptb.discord.com/api/webhooks/1458534483048271894/WPsgou-y5XjOEe0OPXnYhMuOFlVcUxWpa5WzSZvxi_BRqifTSDGqqLsjZZqgmIiZMJ9Z' 
+                ? webhookUrlEditado 
+                : webhookUrl;
 
             // Coletar dados do formulário
             const dados = {
@@ -1073,10 +1094,12 @@
                     }
                     
                     const embedPayload = {
-                        content: '🏥 **Novo Prontuário Veterinário Registrado**\n',
+                        content: isEdicao 
+                            ? '✏️ **Prontuário Veterinário EDITADO**\n📝 **Link de edição enviado separadamente abaixo**'
+                            : '🏥 **Novo Prontuário Veterinário Registrado**\n📝 **Link de edição enviado separadamente abaixo**',
                         embeds: [{
-                            title: '📋 Prontuário Veterinário',
-                            color: 9109504, // Vermelho BAMEVET (#8B0000)
+                            title: isEdicao ? '✏️ Prontuário Veterinário (EDITADO)' : '📋 Prontuário Veterinário',
+                            color: isEdicao ? 16776960 : 9109504, // Amarelo para editado, Vermelho para novo
                             fields: [
                                 {
                                     name: '🏥 Clínica',
@@ -1139,7 +1162,10 @@
 
                     // Enviar para Discord
                     console.log('Enviando para Discord...');
-                    const response = await fetch(webhookUrl, {
+                    console.log('É edição?', isEdicao);
+                    console.log('Webhook usado:', isEdicao ? 'Webhook de edições' : 'Webhook principal');
+                    
+                    const response = await fetch(webhookFinal, {
                         method: 'POST',
                         body: formData
                     });
@@ -1149,7 +1175,7 @@
 
                     if (response.ok) {
                         // Enviar link de edição em mensagem separada
-                        await fetch(webhookUrl, {
+                        await fetch(webhookFinal, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -1159,7 +1185,7 @@
                             })
                         });
 
-                        showToast('✅ Prontuário enviado com sucesso!');
+                        showToast(isEdicao ? '✅ Prontuário editado e reenviado com sucesso!' : '✅ Prontuário enviado com sucesso!');
                         console.log('Prontuário enviado com sucesso!');
                         
                         // Confirmar se deseja limpar o formulário
