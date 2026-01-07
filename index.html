@@ -79,6 +79,28 @@
             z-index: 1;
         }
 
+        .header-logo-text {
+            font-family: 'DM Serif Display', serif;
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            letter-spacing: 2px;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header-logo-text small {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: normal;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+            opacity: 0.95;
+            font-family: 'Work Sans', sans-serif;
+        }
+
         .header-content {
             flex: 1;
             position: relative;
@@ -320,8 +342,12 @@
                 gap: 1rem;
             }
 
-            .header-logo {
-                max-width: 200px;
+            .header-logo-text {
+                font-size: 2.5rem;
+            }
+
+            .header-logo-text small {
+                font-size: 0.75rem;
             }
 
             .header h1 {
@@ -351,7 +377,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://cdn.discordapp.com/attachments/1458521307401555988/1458521443410383000/image.png" alt="BAMEVET" class="header-logo">
+            <img src="https://i.imgur.com/4KhtgsX.png" alt="BAMEVET" class="header-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="header-logo-text" style="display: none;">
+                BAMEVET
+                <small>O melhor para o seu animal!</small>
+            </div>
             <div class="header-content">
                 <h1>Prontuário Veterinário</h1>
                 <p class="subtitle">Registro completo do atendimento clínico</p>
