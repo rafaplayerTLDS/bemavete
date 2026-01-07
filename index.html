@@ -961,7 +961,7 @@
             // Webhook fixo e privado
             const webhookUrl = 'https://ptb.discord.com/api/webhooks/1458492625970532392/6NxWQsqHCYfa-WtepIgv-ktcpcOE01dM-IHaP5_VsWF0ZznfW790dFFfNPtSSXnoxyIR';
             
-            // Webhook para prontuários EDITADOS (configure aqui)
+            // Webhook para prontuários EDITADOS
             const webhookUrlEditado = 'https://ptb.discord.com/api/webhooks/1458534483048271894/WPsgou-y5XjOEe0OPXnYhMuOFlVcUxWpa5WzSZvxi_BRqifTSDGqqLsjZZqgmIiZMJ9Z';
             
             // Verificar se é uma edição (tem parâmetro 'd' ou 'dados' na URL)
@@ -969,9 +969,7 @@
             const isEdicao = urlParams.has('d') || urlParams.has('dados');
             
             // Escolher o webhook correto
-            const webhookFinal = isEdicao && webhookUrlEditado !== 'https://ptb.discord.com/api/webhooks/1458534483048271894/WPsgou-y5XjOEe0OPXnYhMuOFlVcUxWpa5WzSZvxi_BRqifTSDGqqLsjZZqgmIiZMJ9Z' 
-                ? webhookUrlEditado 
-                : webhookUrl;
+            const webhookFinal = isEdicao ? webhookUrlEditado : webhookUrl;
 
             // Coletar dados do formulário
             const dados = {
