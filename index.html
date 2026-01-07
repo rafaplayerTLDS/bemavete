@@ -1003,6 +1003,18 @@
                     
                     console.log('Tamanho da URL:', editUrl.length, 'caracteres');
                     
+                    // Encurtar URL usando TinyURL
+                    let shortUrl = editUrl;
+                    try {
+                        const tinyResponse = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(editUrl)}`);
+                        if (tinyResponse.ok) {
+                            shortUrl = await tinyResponse.text();
+                            console.log('URL encurtada:', shortUrl);
+                        }
+                    } catch (error) {
+                        console.warn('Não foi possível encurtar URL, usando URL completa:', error);
+                    }
+                    
                     const embedPayload = {
                         content: '🏥 **Novo Prontuário Veterinário Registrado**\n📝 **Link de edição enviado separadamente abaixo**',
                         embeds: [{
@@ -1086,7 +1098,7 @@
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                                content: `🔗 **Link para editar o prontuário ${dados.prontuarioNum}:**\n${editUrl}`
+                                content: `🔗 **Link para editar o prontuário ${dados.prontuarioNum}:**\n${shortUrl}`
                             })
                         });
 
