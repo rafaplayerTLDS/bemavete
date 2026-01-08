@@ -895,7 +895,7 @@
         // Função para criar embed do Discord
         function criarEmbedDiscord(dados) {
             return {
-                content: '🏥 **Novo Prontuário Veterinário Registrado <@527225006321827840> **',
+                content: '🏥 **Novo Prontuário Veterinário Registrado **',
                 embeds: [{
                     title: '📋 Prontuário Veterinário - BAMAVET',
                     color: 3050314,
@@ -1093,8 +1093,8 @@
                     
                     const embedPayload = {
                         content: isEdicao 
-                            ? '✏️ **Prontuário Veterinário EDITADO**\n📝 <@527225006321827840> **Link de edição enviado separadamente abaixo**'
-                            : '🏥 **Novo Prontuário Veterinário Registrado <@527225006321827840> **\n📝 **Link de edição enviado separadamente abaixo**',
+                            ? '✏️ **Prontuário Veterinário EDITADO**\n📝 **Link de edição enviado separadamente abaixo**'
+                            : '🏥 **Novo Prontuário Veterinário Registrado **\n📝 **Link de edição enviado separadamente abaixo**',
                         embeds: [{
                             title: isEdicao ? '✏️ Prontuário Veterinário (EDITADO)' : '📋 Prontuário Veterinário',
                             color: isEdicao ? 16776960 : 9109504, // Amarelo para editado, Vermelho para novo
